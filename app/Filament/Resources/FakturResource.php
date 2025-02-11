@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -28,19 +29,44 @@ class FakturResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('kode_faktur'),
-                DatePicker::make('tanggal_faktur'),
-                TextInput::make('kode_customer'),
+                TextInput::make('kode_faktur')
+                    ->columnSpan([
+                        'default' => '2', // column
+                        'md' => '1', //span nya
+                        'lg' => '1', //span nya
+                        'xl' => '1', //span nya
+                    ]),
+                DatePicker::make('tanggal_faktur')
+                    ->columnSpan([
+                        'default' => '2',
+                        'md' => '1',
+                        'lg' => '1',
+                        'xl' => '1',
+                    ]),
+                TextInput::make('kode_customer')
+                    ->columnSpan([
+                        'default' => '2',
+                        'md' => '1',
+                        'lg' => '1',
+                        'xl' => '1',
+                    ]),
                 Select::make('customer_id')
                     ->relationship('customer', 'nama_customer'),
                 Repeater::make('detail')
                     ->relationship()
+                    ->columnSpan(2) // cari di from builder scroll kebawah di lay out ada grid
                     ->schema([
                         Select::make('barang_id')
-                            ->relationship('barang', 'nama_barang'),
+                            ->relationship('barang', 'nama_barang')
+                            ->columnSpan([
+                                'default' => '1',
+                                'md' => '3',
+                                'lg' => '3',
+                                'xl' => '3',
+                            ]),
+                        TextInput::make('nama_barang'),
                         TextInput::make('diskon')
                             ->numeric(),
-                        TextInput::make('nama_barang'),
                         TextInput::make('harga')
                             ->numeric(),
                         TextInput::make('subtotal')
@@ -50,11 +76,36 @@ class FakturResource extends Resource
                         TextInput::make('qty_total')
                             ->numeric(),
                     ]),
-                TextInput::make('ket_faktur'),
-                TextInput::make('total'),
-                TextInput::make('nominal_charge'),
-                TextInput::make('charge'),
-                TextInput::make('total_final'),
+                Textarea::make('ket_faktur')
+                    ->columnSpan(2),
+                TextInput::make('total')
+                    ->columnSpan([
+                        'default' => '2',
+                        'md' => '1',
+                        'lg' => '1',
+                        'xl' => '1',
+                    ]),
+                TextInput::make('nominal_charge')
+                    ->columnSpan([
+                        'default' => '2',
+                        'md' => '1',
+                        'lg' => '1',
+                        'xl' => '1',
+                    ]),
+                TextInput::make('charge')
+                    ->columnSpan([
+                        'default' => '2', // column
+                        'md' => '1', //span nya
+                        'lg' => '1', //span nya
+                        'xl' => '1', //span nya
+                    ]),
+                TextInput::make('total_final')
+                    ->columnSpan([
+                        'default' => '2',
+                        'md' => '1',
+                        'lg' => '1',
+                        'xl' => '1',
+                    ]),
             ]);
     }
 
