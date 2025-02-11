@@ -10,4 +10,9 @@ class Barang extends Model
     use HasFactory;
 
     protected $fillable = ['nama_barang', 'kode_barang', 'harga_barang'];
+
+    public function detail()
+    {
+        return $this->hasMany(DetailFakturModel::class);
+    }
 }
