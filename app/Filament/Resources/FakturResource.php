@@ -185,15 +185,19 @@ class FakturResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('kode_faktur'),
-                TextColumn::make('tanggal_faktur'),
-                TextColumn::make('kode_customer'),
+                TextColumn::make('tanggal_faktur')
+                    ->date('d F Y'),
+                TextColumn::make('kode_customer')
+                    ->alignCenter(),
                 TextColumn::make('ket_faktur'),
                 TextColumn::make('customer.nama_customer'),
                 TextColumn::make('total')
                     ->formatStateUsing(fn(FakturModel $record): string => 'Rp ' . number_format($record->total ?? 0, 2, ',', '.')),
-                TextColumn::make('nominal_charge'),
+                TextColumn::make('nominal_charge')
+                    ->alignCenter(),
                 TextColumn::make('charge'),
-                TextColumn::make('total_final'),
+                TextColumn::make('total_final')
+                    ->formatStateUsing(fn(FakturModel $record): string => 'Rp ' . number_format($record->total_final ?? 0, 2, ',', '.')),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
