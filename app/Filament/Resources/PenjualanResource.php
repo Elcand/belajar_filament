@@ -7,6 +7,7 @@ use App\Models\PenjualanModel;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\Action;
 use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -66,11 +67,22 @@ class PenjualanResource extends Resource
                     ->searchable()
                     ->badge(),
             ])
+            ->emptyStateHeading('Tidak Ada Data!')
+            ->emptyStateDescription('Silahkan Tambahkan Data Terlebih Dahulu!')
+            ->emptyStateIcon('heroicon-o-bookmark')
+            ->emptyStateActions([
+                Action::make('create')
+                    ->label('Tambahkan Data')
+                    ->url(route('filament.admin.resources.fakturs.create'))
+                    ->icon('heroicon-m-plus')
+                    ->button(),
+            ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
