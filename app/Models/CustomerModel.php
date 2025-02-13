@@ -17,4 +17,9 @@ class CustomerModel extends Model
     {
         return $this->hasMany(FakturModel::class);
     }
+
+    public function penjualan()
+    {
+        return $this->hasMany(PenjualanModel::class, 'faktur_id');
+    }
 }

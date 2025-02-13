@@ -10,6 +10,7 @@ use App\Models\CustomerModel;
 use Filament\Forms;
 use App\Filament\intval;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
@@ -30,6 +31,8 @@ class FakturResource extends Resource
     protected static ?string $model = FakturModel::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationLabel = 'Faktur';
+    protected static ?string $navigationGroup = 'Faktur';
 
     public static function form(Form $form): Form
     {
@@ -38,6 +41,7 @@ class FakturResource extends Resource
                 TextInput::make('kode_faktur')
                     ->columnSpan(2),
                 DatePicker::make('tanggal_faktur')
+                    ->prefixIcon('heroicon-o-calendar')
                     ->columnSpan([
                         'default' => '2',
                         'md' => '1',
