@@ -14,7 +14,21 @@ class PenjualanChart extends ChartWidget
 
     protected function getData(): array
     {
-        $trend = Trend::model(PenjualanModel::class)
+        // $trendMinggu = Trend::model(PenjualanModel::class)
+        //     ->between(
+        //         start: now()->startOfDay(),
+        //         end: now()->endOfDay(),
+        //     )
+        //     ->perDay()
+        //     ->count();
+        // $trendBulan = Trend::model(PenjualanModel::class)
+        //     ->between(
+        //         start: now()->startOfDay(),
+        //         end: now()->endOfDay(),
+        //     )
+        //     ->perDay()
+        //     ->count();
+        $trendTahun = Trend::model(PenjualanModel::class)
             ->between(
                 start: now()->startOfYear(),
                 end: now()->endOfYear(),
@@ -24,12 +38,22 @@ class PenjualanChart extends ChartWidget
 
         return [
             'datasets' => [
+                // [
+                //     'label' => 'Penjualan per Hari',
+                //     'data' => $trendMinggu->map(fn(TrendValue $value) => $value->aggregate)->toArray(),
+                // ],
+                // [
+                //     'label' => 'Penjualan per Bulan',
+                //     'data' => $trendBulan->map(fn(TrendValue $value) => $value->aggregate)->toArray(),
+                // ],
                 [
-                    'label' => 'Penjualan per Bulan',
-                    'data' => $trend->map(fn(TrendValue $value) => $value->aggregate)->toArray(),
+                    'label' => 'Penjualan per Tahun',
+                    'data' => $trendTahun->map(fn(TrendValue $value) => $value->aggregate)->toArray(),
                 ],
             ],
-            'labels' => $trend->map(fn(TrendValue $value) => Carbon::parse($value->date)->translatedFormat('M'))->toArray(),
+            // 'labels' => $trendMinggu->map(fn(TrendValue $value) => Carbon::parse($value->date)->translatedFormat('D'))->toArray(),
+            // 'labels' => $trendBulan->map(fn(TrendValue $value) => Carbon::parse($value->date)->translatedFormat('W'))->toArray(),
+            'labels' => $trendTahun->map(fn(TrendValue $value) => Carbon::parse($value->date)->translatedFormat('M'))->toArray(),
         ];
     }
 
