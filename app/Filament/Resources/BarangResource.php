@@ -19,9 +19,11 @@ class BarangResource extends Resource
 {
     protected static ?string $model = Barang::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-inbox-stack';
     protected static ?string $navigationLabel = 'Barang';
     protected static ?string $slug = 'barang';
+
+    public static ?string $label = 'List Barang';
 
     public static function form(Form $form): Form
     {
