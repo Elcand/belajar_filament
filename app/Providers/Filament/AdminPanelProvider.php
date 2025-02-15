@@ -3,10 +3,12 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Pages\Auth\LoginCustom;
+use App\Filament\Pages\Profile;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\MenuItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -18,6 +20,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Joaopaulolndev\FilamentEditProfile\FilamentEditProfilePlugin;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -29,8 +32,32 @@ class AdminPanelProvider extends PanelProvider
             ->path('admin')
             ->login(LoginCustom::class)
             ->registration()
+            ->userMenuItems([
+                'avatar_url' => MenuItem::make()
+                    ->label(fn() => auth()->user()->name)
+                    ->url(fn(): string => Profile::getUrl())
+                    ->icon('heroicon-m-user-circle')
+            ])
             ->colors([
                 'primary' => Color::Amber,
+            ])
+            ->plugins([
+                FilamentEditProfilePlugin::make()
+                    ->slug('my-profile')
+                    ->setTitle('My Profile')
+                    ->setNavigationLabel('My Profile')
+                    ->setNavigationGroup('Group Profile')
+                    ->setIcon('heroicon-o-user')
+                    ->setSort(10)
+                    ->canAccess(fn() => auth()->user()->id === 1)
+                    ->shouldRegisterNavigation(false)
+                    ->shouldShowDeleteAccountForm(false)
+                    ->shouldShowSanctumTokens()
+                    ->shouldShowBrowserSessionsForm()
+                    ->shouldShowAvatarForm()
+                    ->customProfileComponents([
+                        CustomProfileComponent::class,
+                    ])
             ])
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
