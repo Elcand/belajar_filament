@@ -37,9 +37,17 @@ class Profile extends Page
 
     public function getFilamentAvatarUrl(): ?string
     {
-        $avatarColumn = config('profile.avatar_column', 'avatar_url');
-        return $this->$avatarColumn ? Storage::url("$this->$avatarColumn") : null;
+        $avatarColumn = config('profile.avatar_column', 'profile_image');
+        $path = $this->$avatarColumn;
+        dd($path, Storage::exists($path), Storage::url($path));
+        return $path ? Storage::url($path) : null;
     }
+
+    public function getProfileImageUrlAttribute()
+    {
+        return $this->profile_image ? Storage::url($this->profile_image) : null;
+    }
+
 
     public function form(Form $form): Form
     {
@@ -50,10 +58,12 @@ class Profile extends Page
                     ->image()
                     ->imageEditor()
                     ->avatar()
+                    ->afterStateUpdated(fn($state, $record) => $record->update(['profile_image' => $state]))
                     ->extraAttributes([
                         'class' => 'rounded-full w-24 h-24 object-cover mx-auto flex justify-center items-center'
                     ])
-                    ->directory('storage/profile'),
+                    ->directory('profile')
+                    ->saveRelationshipsWhenHidden(),
                 TextInput::make('name')
                     ->label('Name')
                     ->autofocus()

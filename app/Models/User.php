@@ -21,8 +21,14 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'avatar_url',
+        'profile_image',
     ];
+
+    public function setProfileImageAttribute($value)
+    {
+        $this->attributes['profile_image'] = $value ?: null;
+    }
+
 
     /**
      * The attributes that should be hidden for serialization.
